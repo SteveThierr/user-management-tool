@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics — UserDB{% endblock %}
+
+{% block content %}
+<h1>Analytics</h1>
+
+{% if stats %}
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total vowels</div>
+            <div class="stat-value">{{ stats.total }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Average per name</div>
+            <div class="stat-value">{{ stats.average }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Longest name</div>
+            <div class="stat-value">{{ stats.longest }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total users</div>
+            <div class="stat-value">{{ users | length }}</div>
+        </div>
+    </div>
+
+    <h2>Top 2 by vowel count</h2>
+    {% if top %}
+        <ol>
+            {% for entry in top %}
+                <li>{{ entry.name }} — {{ entry.vowels }} vowels</li>
+            {% endfor %}
+        </ol>
+    {% else %}
+        <p>Not enough users yet.</p>
+    {% endif %}
+
+    <h2>All users — vowel breakdown</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vowels</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.name | count_v }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% else %}
+    <p>No users to analyse yet. <a href="{{ url_for('add') }}">Add some first.</a></p>
+{% endif %}
+
+{% endblock %}

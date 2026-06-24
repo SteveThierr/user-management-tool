@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Add User — UserDB{% endblock %}
+
+{% block content %}
+<h1>Add New User</h1>
+
+<form method="POST" action="{{ url_for('add') }}">
+
+    <div class="field">
+        <label for="name">Full Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ form.get('name', '') }}"
+            placeholder="Any casing — will be cleaned automatically"
+        >
+        {% if errors.get('name') %}
+            <span class="error">{{ errors.name }}</span>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        <label for="email">Email</label>
+        <input
+            type="text"
+            id="email"
+            name="email"
+            value="{{ form.get('email', '') }}"
+            placeholder="user@example.com"
+        >
+        {% if errors.get('email') %}
+            <span class="error">{{ errors.email }}</span>
+        {% endif %}
+    </div>
+
+    <div class="field">
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            {% for role in ["Admin", "Editor", "Viewer"] %}
+                <option value="{{ role }}"
+                    {% if form.get('role') == role %}selected{% endif %}>
+                    {{ role }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">Add User</button>
+        <a href="{{ url_for('index') }}">Cancel</a>
+    </div>
+
+</form>
+{% endblock %}
